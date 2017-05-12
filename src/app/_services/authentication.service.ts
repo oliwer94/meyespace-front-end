@@ -2,7 +2,7 @@
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ng2-cookies';
 
 @Injectable()
 export class AuthenticationService {
@@ -24,11 +24,11 @@ export class AuthenticationService {
                 // login successful if there's a jwt token in the response
 
                 let jsonstring = JSON.parse(response["_body"]);
-
-                let id = this._cookieService.get("userId");
+                let id = jsonstring["userId"];
                 let country = jsonstring["country"];
                 let username = jsonstring["userName"];
-                let token = this._cookieService.get("token");
+                let token =jsonstring["token"];
+                this._cookieService.set("token",token,new Date(Date.now() + 60000));
 
                 if (token && id && country && username) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes

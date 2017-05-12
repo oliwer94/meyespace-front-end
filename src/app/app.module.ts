@@ -10,8 +10,7 @@ import { routing } from './app.routing';
 
 import { MDL } from './MaterialDesignLiteUpgradeElement';
 
-import { CookieService } from 'ngx-cookie';
-import { CookieModule } from 'ngx-cookie';
+import { CookieService } from 'ng2-cookies';
 
 
 import { AlertComponent } from './_directives/index';
@@ -27,8 +26,7 @@ import {OrdinalPipe} from './_pipes/ordinal.pipe';
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing,
-        CookieModule.forRoot()
+        routing
     ],
     declarations: [
         AppComponent,
