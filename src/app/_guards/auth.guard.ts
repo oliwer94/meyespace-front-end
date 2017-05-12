@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
-            if (this._cookieService.get("token") !== undefined || this._cookieService.get("token") !== "") {
+            if (this._cookieService.get("token") !== undefined && this._cookieService.get("token") !== "") {
                 return true;
             }
 
@@ -21,8 +21,6 @@ export class AuthGuard implements CanActivate {
             this.router.navigate(['/login'], { queryParams:{}});
             return false;
         }
-
-       
 
         // not logged in so redirect to login page with the return url
         this.router.navigate(['/login'], { queryParams: {} });
