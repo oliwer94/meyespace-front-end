@@ -22,7 +22,6 @@
         "styles.css"
       ],
       "scripts": [
-        "../node_modules/ngx-cookie/bundles/ngx-cookie.umd.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
