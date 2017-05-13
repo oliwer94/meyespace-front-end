@@ -24,12 +24,13 @@ export class RegisterComponent {
         let headers = new Headers();
         let backendURL = /*'http://localhost:3000/login'//*/'https://meyespace-userservice.herokuapp.com/login';
         headers.append('Content-Type', 'application/json');
-        headers.append('Access-Control-Allow-Origin', '*');
+        
 
         let options = new RequestOptions({ headers: headers });
-
-        this.http.get("https://meyespace-frontend.herokuapp.com/getCountry").subscribe((data: any) => {
-            this.model.country = data.country;
+        //let url = "http://localhost:8080/getCountry";
+        let url = "https://meyespace-frontend.herokuapp.com/getCountry";
+        this.http.get(url,options).subscribe((data: any) => {
+            this.model.country = data._body;
         })
     }
 
