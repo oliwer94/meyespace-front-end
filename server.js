@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/dist'));
 
 app.get('/getCountry', function (req, res) {
 
-console.log(req.connection.remoteAddress,req.ip,req.ips);
+Gconsole.log(req.connection.remoteAddress,req.ip,req.ips);
     res.send("req.connection.remoteAddress: "+req.connection.remoteAddress+"req.ip: "+req.ips+"req.ips: "+req.ips);
     /*axios.get(`https://ipinfo.io/${req.connection.remoteAddress}`).then((info)  => {
         this.countryName = info.country;
