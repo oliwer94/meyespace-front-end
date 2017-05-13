@@ -28,7 +28,7 @@ export class RegisterComponent {
 
         let options = new RequestOptions({ headers: headers });
 
-        this.http.get("https://meyespace-frontens.com/getCountry").subscribe((data: any) => {
+        this.http.get("https://meyespace-frontend.herokuapp.com/getCountry").subscribe((data: any) => {
             this.model.country = data.country;
         })
     }
