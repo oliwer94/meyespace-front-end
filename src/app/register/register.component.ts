@@ -28,7 +28,7 @@ export class RegisterComponent {
 
         let options = new RequestOptions({ headers: headers });
         //let url = "http://localhost:8080/getCountry";
-        let url = "https://meyespace-frontend.herokuapp.com/getCountry";
+        let url = "https://meyespace-livedataservice.herokuapp.com/getCountry";
         this.http.get(url,options).subscribe((data: any) => {
             this.model.country = data._body;
         })

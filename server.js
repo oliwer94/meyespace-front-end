@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
 const express = require('express');
 const path = require('path');
-const axios = require('axios');
+//const axios = require('axios');
 
 const app = express();
-app.enable('trust proxy');
+/*app.enable('trust proxy');
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", process.env.CORS); //<-- you can change this with a specific url like http://localhost:4200
@@ -12,14 +12,14 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     next();
-});
+});*/
 
 
 // Run the app by serving the static files
 // in the dist directory
 app.use(express.static(__dirname + '/dist'));
 
-app.get('/getCountry', function (req, res) {
+/*app.get('/getCountry', function (req, res) {
    
     axios.get(`https://ipinfo.io/${req.ip}`).then((info)  => {
         this.countryName = info.country;
@@ -27,7 +27,7 @@ app.get('/getCountry', function (req, res) {
         res.send(obj[info.country]);
     });
 });
-
+*/
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
