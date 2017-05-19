@@ -15,7 +15,7 @@
     "lite": "lite-server",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "postinstall": "ng build -prod"
+    "postinstall": "ng build -prod --aot=false"
   },
   "engines": {
     "node": "6.10.0",
