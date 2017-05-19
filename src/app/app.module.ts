@@ -15,10 +15,19 @@ import { CookieService } from 'ng2-cookies';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, UserService } from './_services/index';
+import { AlertService, AuthenticationService, UserService,StatService,LiveDataService } from './_services/index';
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
+import { ProfileComponent } from './profile/index';
+import { FriendsComponent } from './friends/index';
+import { FindPlayerComponent } from './findPlayer/index';
+import { GlobalChatComponent } from './globalChat/index';
+import { LeaderBoardComponent } from './leaderboard/index';
+import { LandingViewComponent } from './landingView/index';
+
+import { LoginAndRegisterComponent } from './loginAndRegister/index';
+
 import {OrdinalPipe} from './_pipes/ordinal.pipe';
 
 @NgModule({
@@ -35,7 +44,14 @@ import {OrdinalPipe} from './_pipes/ordinal.pipe';
         LoginComponent,
         RegisterComponent,
         MDL,
-        OrdinalPipe
+        OrdinalPipe,
+        ProfileComponent,
+        FriendsComponent,
+        FindPlayerComponent,
+        GlobalChatComponent,
+        LeaderBoardComponent,
+        LandingViewComponent,
+        LoginAndRegisterComponent
     ],
     providers: [
         AuthGuard,
@@ -43,7 +59,9 @@ import {OrdinalPipe} from './_pipes/ordinal.pipe';
         AuthenticationService,
         UserService,
         BaseRequestOptions,
-        CookieService
+        CookieService,
+        StatService,
+        LiveDataService
     ],
     
     bootstrap: [AppComponent]

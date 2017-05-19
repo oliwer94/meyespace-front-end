@@ -1,0 +1,49 @@
+<div class="container">
+    <div>
+        <form class="signUp" name="form" (ngSubmit)="ff.form.valid && login()" #ff="ngForm" novalidate>
+            <h3>Welcome<br>Back <br> To <br> Meyespace!</h3>
+            <div class="form-group" [ngClass]="{ 'has-error': ff.submitted && !email.valid }" style="margin-top:60px;">
+                <input type="email" class="w100" placeholder="e-mail" name="email" [(ngModel)]="loginModel.email" #username="ngModel"
+                    required />
+                <div *ngIf="ff.submitted && !email.valid" style="margin-top:-20px;" class="help-block">Username is required</div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': ff.submitted && !password.valid }" style="margin-top:40px;">
+                <input type="password" class="w100" placeholder="password" name="password" [(ngModel)]="loginModel.password" #password="ngModel"
+                    required />
+                <div *ngIf="ff.submitted && !password.valid" style="margin-top:-20px;" class="help-block">Password is required</div>
+            </div>
+            <button class="form-btn sx log-in" type="button" (click)="loginClick()">Sign Up </button>
+            <button class="form-btn dx" type="submit">Log In</button>
+        </form>
+    </div>
+    <div>
+        <form class="signIn" name="form2" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+            <h3>Create Your Account</h3>
+            <p>Just enter your email address<br> and your password for join.
+            </p>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }" >
+                <input class="w100" type="text" placeholder="username" name="username" [(ngModel)]="registerModel.username" #username="ngModel"
+                    required />
+                <div *ngIf="f.submitted && !username.valid" style="margin-top:-20px;"class="help-block">Username is required</div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }" style="margin-top:15px;">
+                <input class="w100" type="text" name="email" placeholder="e-mail" [(ngModel)]="registerModel.email" #email="ngModel" required
+                />
+                <div *ngIf="f.submitted && !email.valid" style="margin-top:-20px;"class="help-block">Email is required</div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !country.valid }" style="margin-top:15px;">
+                <input class="w100" type="text" name="country" placeholder="country" [(ngModel)]="registerModel.country" #country="ngModel"
+                    required />
+                <div *ngIf="f.submitted && !country.valid" style="margin-top:-20px;" class="help-block">Country is required</div>
+            </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }" style="margin-top:15px;">
+                <input type="password" class="w100" name="password" placeholder="password" [(ngModel)]="registerModel.password" #password="ngModel"
+                    required />
+                <div *ngIf="f.submitted && !password.valid" style="margin-top:-20px;"class="help-block">Password is required</div>
+            </div>
+            <button class="form-btn sx back" type="button" (click)="backClick()">Back</button>
+            <button class="form-btn dx" type="submit">Sign Up</button>
+        </form>
+    </div>
+</div>

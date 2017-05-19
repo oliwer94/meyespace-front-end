@@ -34,7 +34,6 @@ export class RegisterComponent {
         })
     }
 
-
     register() {
         this.loading = true;
         navigator.geolocation.getCurrentPosition(function (position) {

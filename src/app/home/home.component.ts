@@ -2,11 +2,10 @@
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 
 import { User } from '../_models/index';
-import { UserService } from '../_services/index';
+import { UserService, StatService, LiveDataService } from '../_services/index';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import * as io from 'socket.io-client';
 
 @Component({
     moduleId: module.id,
@@ -16,112 +15,119 @@ import * as io from 'socket.io-client';
 export class HomeComponent implements OnInit {
     currentUser: User;
     users: User[] = [];
-    global_scores: any[] = [];
-    local_scores: any[] = [];
+    global_leader_board: any[] = [];
+    local_leader_board: any[] = [];
 
-    private statUrl = "https://meyespace-statservice.herokuapp.com"
-    private url = 'https://meyespace-livedataservice.herokuapp.com';
+    showProfile: boolean = false;
+    showFriends: boolean = false;
+    showFindPlayer: boolean = false;
+    showLeaderBoard: boolean = false;
+    showGlobalChat: boolean = false;
+    showLandingView: boolean = true;
 
-    /* private statUrl= "http://localhost:5000" ; 
-     private url = 'http://localhost:6001';*/
+    liveDataService: any = "";
+   
 
-    socket: any;
-
-    constructor(private http: Http, private userService: UserService) {
+    constructor(private http: Http, private userService: UserService, private statService: StatService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.socket = io(this.url);
-        this.socket.connect(this.url);
+        this.liveDataService = new LiveDataService(this.currentUser.country);
+    }
+
+    changeMenu(menuitem) {
+
+        this.showFindPlayer = (menuitem == "search") ? true : false;
+        this.showProfile = (menuitem == "profile") ? true : false;
+        this.showLeaderBoard = (menuitem == "leaderboard") ? true : false;
+        this.showFriends = (menuitem == "friends") ? true : false;
+        this.showGlobalChat = (menuitem == "globalchat") ? true : false;
+        this.showLandingView = (menuitem == "home") ? true : false;
     }
 
     ngOnInit() {
-        this.socket.emit('join', this.currentUser.country, (error: any) => {
-            if (error) {
-                alert("An error has occured please reload the page to try to reconnect! " + error);
-            }
-            console.log(`Connected to live data service. Listening on Global and ${this.currentUser.country} channels`);
+
+        this.liveDataService.getLocalList(this.liveDataService).subscribe(data => {
+            this.refreshLocalListUI(data);
         });
 
-        this.socket.on('local', (data: any) => {
-            this.refreshLocalList(data);
+        this.liveDataService.getGlobalList(this.liveDataService).subscribe(data => {
+            this.refreshGlobalListUI(data);
         });
 
-        this.socket.on('global', (data: any) => {
-            this.refreshGlobalList(data);
-        });
+        this.refreshGlobalListData();
+        this.refreshLocalListData();
 
-        this.http.get(this.statUrl + "/global_top_x/5").subscribe((data: any) => {
-            this.refreshGlobalList(JSON.parse(data._body));
-        });
 
-        this.http.get(this.statUrl + `/national_top_x/5/${this.currentUser.country}`).subscribe((data: any) => {
-            this.refreshLocalList(JSON.parse(data._body));
-        });
+        this.refreshLocalRankData();
+        this.refreshGlobalRankData();
+    }
 
-        this.http.get(this.statUrl + `/global_rank/${this.currentUser.id}`).subscribe((data: any) => {
-            data = JSON.parse(data._body);
-            console.log(data.score);
-            if (!isNaN(parseFloat(data.score)) && isFinite(data.score)) {
-                this.currentUser.globalRank = data.score;
-            }
-            else {
-                this.currentUser.globalRank = NaN;
-            }
-        });
-
-        this.http.get(this.statUrl + `/local_rank/${this.currentUser.id}`).subscribe((data: any) => {
-            data = JSON.parse(data._body);
-            console.log(data.score);
-            if (!isNaN(parseFloat(data.score)) && isFinite(data.score)) {
-                this.currentUser.localRank = data.score;
-            }
-            else {
-                this.currentUser.localRank = NaN;
-            }
+    refreshLocalRankData() {
+        this.statService.getNationalRankById(this.currentUser.id).subscribe((data: any) => {
+            this.refreshLocalRankingUI(data.score);
         });
     }
 
-    refreshGlobalList(data: any) {
-        this.global_scores = [];
+    refreshLocalRankingUI(score: number) {
+        if (!isNaN(score) && isFinite(score)) {
+            this.currentUser.localRank = score;
+        }
+        else {
+            this.currentUser.localRank = NaN;
+        }
+    }
+
+    refreshGlobalRankData() {
+        this.statService.getGlobalRankById(this.currentUser.id).subscribe((data: any) => {
+            this.refreshGlobalRankingUI(data.score);
+        });
+    }
+
+    refreshGlobalRankingUI(score: number) {
+        if (!isNaN(score) && isFinite(score)) {
+            this.currentUser.globalRank = score;
+        }
+        else {
+            this.currentUser.globalRank = NaN;
+        }
+    }
+
+    refreshGlobalListData() {
+        this.statService.getGlobalTopX(5).subscribe(data => {
+            this.refreshGlobalListUI(data);
+        });
+    }
+
+    refreshGlobalListUI(data: any) {
+
+        this.global_leader_board = [];
 
         data.forEach((element: any) => {
-            this.global_scores.push(element.score);
+            let global_entry: LeaderBoardEntry = new LeaderBoardEntry();
+            global_entry.username = element.username;
+            global_entry.score = element.score;
+            this.global_leader_board.push(global_entry);
         });
-        //console.log('Global > ', data);
     }
 
-    refreshLocalList(data: any) {
-        this.local_scores = [];
+    refreshLocalListData() {
+        this.statService.getNationalTopX(5, this.currentUser.country).subscribe(data => {
+            this.refreshLocalListUI(data);
+        });
+    }
+
+    refreshLocalListUI(data: any) {
+        this.local_leader_board = [];
 
         data.forEach((element: any) => {
-            this.local_scores.push(element.score);
+            let local_entry: LeaderBoardEntry = new LeaderBoardEntry();
+            local_entry.username = element.username;
+            local_entry.score = element.score;
+            this.local_leader_board.push(local_entry);
         });
-        //console.log('Local > ', this.local_scores);
     }
+}
 
-    /*deleteUser(id: number) {
-        this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
-    }
-
-    private loadAllUsers() {
-        this.userService.getAll().subscribe(users => { this.users = users; });
-    }*/
-
-    /*sendMessage(message: any) {
-        this.socket.emit('add-message', message);
-    }
-
-    getMessages() {
-        let observable = new Observable(observer => {
-
-            this.socket.on('message', (data: any) => {
-                observer.next(data);
-                console.log(data);
-            });
-
-            return () => {
-                this.socket.disconnect();
-            };
-        })
-        return observable;
-    }*/
+class LeaderBoardEntry {
+    username: string;
+    score: number;
 }

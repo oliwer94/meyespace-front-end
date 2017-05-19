@@ -8,18 +8,15 @@ import { CookieService } from 'ng2-cookies';
 export class AuthenticationService {
     constructor(private http: Http, private _cookieService: CookieService) { }
 
-
-
-    login(username: string, password: string) {
+    login(email: string, password: string) {
 
         let headers = new Headers();
-        let backendURL = /*'http://localhost:3000/login'//*/'https://meyespace-userservice.herokuapp.com/login';
+        let backendURL = /*'http://localhost:3000/login'/*/'https://meyespace-userservice.herokuapp.com/login';
         headers.append('Content-Type', 'application/json');
-
 
         let options = new RequestOptions({ headers: headers, withCredentials: true });
 
-        return this.http.post(backendURL, JSON.stringify({ "email": username, "password": password }), options)
+        return this.http.post(backendURL, JSON.stringify({ "email": email, "password": password }), options)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
 
@@ -27,8 +24,8 @@ export class AuthenticationService {
                 let id = jsonstring["userId"];
                 let country = jsonstring["country"];
                 let username = jsonstring["userName"];
-                let token =jsonstring["token"];
-                this._cookieService.set("token",token,new Date(Date.now() + 60000));
+                let token = jsonstring["token"];
+                this._cookieService.set("token", token, (new Date(Date.now() + (60000*60))));
 
                 if (token && id && country && username) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
