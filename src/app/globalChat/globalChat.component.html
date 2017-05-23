@@ -1,1 +1,54 @@
-globalChat
+<div class="chat">
+
+    <div class="chat__sidebar">
+            <div class="centered-form__form">
+                <form  id="credentials-form">
+                   
+                    <div class="form-field">
+                        <label>Room name </label>
+                        <input type="text" name="room" id="room" #box>
+                    </div>
+                    <p align="center" style="position:relativ; margin-top:-20;">or</p>
+                    <div style="position:relative;width:200px;height:25px;border:0;padding:0;margin:0;">
+                        <select id="rooms" style="position:absolute;top:0px;left:0px;width:188px; height:25px;line-height:20px;margin:0;padding:0;"
+                            onchange="document.getElementById('room').value=this.options[this.selectedIndex].text;">
+                </select>
+                    </div>
+                    <div class="form-field">
+                        <button (click)="joinRoom(box.value)">Join</button>
+                    </div>
+                </form>
+        </div>
+        <h3>People</h3>
+        <div id="users" style="overflow-y: auto;">
+                <ol id="userList" >
+                    <li *ngFor="let entry of userList">{{entry}}</li>
+                </ol>
+        </div>
+    </div>
+
+    <div class="chat__main">
+        <ol id="messages" class="chat__messages">
+            <li class=message  *ngFor="let entry of messages">
+            <div class="message__title">
+                <h4>{{entry.from}}</h4>
+                <span>{{entry.createdAt}}</span>
+            </div>
+            <div class="message__body">
+                <p>{{entry.text}}</p>
+            </div>
+            <hr>
+        </li>
+
+        </ol>
+
+        <div class="chat__footer">
+
+            <form id="message-form" (ngSubmit)="f.form.valid && sendMessage()" #f="ngForm" novalidate>
+                <input name="message" type="text" placeholder="Message"  [(ngModel)]="messageModel.message" #message="ngModel"
+                    required/>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</div>

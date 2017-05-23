@@ -15,7 +15,7 @@ import { CookieService } from 'ng2-cookies';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, UserService,StatService,LiveDataService } from './_services/index';
+import { AlertService, AuthenticationService, UserService,StatService,LiveDataService,ChatService } from './_services/index';
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
@@ -52,6 +52,7 @@ import {OrdinalPipe} from './_pipes/ordinal.pipe';
         LeaderBoardComponent,
         LandingViewComponent,
         LoginAndRegisterComponent
+        
     ],
     providers: [
         AuthGuard,
@@ -61,7 +62,8 @@ import {OrdinalPipe} from './_pipes/ordinal.pipe';
         BaseRequestOptions,
         CookieService,
         StatService,
-        LiveDataService
+        LiveDataService,
+        ChatService
     ],
     
     bootstrap: [AppComponent]

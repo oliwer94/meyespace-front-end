@@ -6,9 +6,9 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class LiveDataService {
 
-    private url = 'https://meyespace-livedataservice.herokuapp.com';
+    //private url = 'https://meyespace-livedataservice.herokuapp.com';
 
-    //private url = 'http://localhost:6001';
+    private url = 'http://localhost:6001';
     socket: any;
 
     constructor(country: string) {
@@ -38,6 +38,19 @@ export class LiveDataService {
         let observable = new Observable(observer => {     
             //console.log(instance.socket);       
             instance.socket.on('local', (data) => {
+                observer.next(data);
+            });
+            return () => {
+                this.socket.disconnect();
+            };
+        })
+        return observable;
+    }
+
+     getOnlineFriends(instance:LiveDataService) {
+        let observable = new Observable(observer => {     
+            //console.log(instance.socket);       
+            instance.socket.on('onlineFriends', (data) => {
                 observer.next(data);
             });
             return () => {

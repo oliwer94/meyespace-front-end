@@ -5,9 +5,9 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 export class StatService {
     constructor(private http: Http) { }
 
-    private statUrl = "https://meyespace-statservice.herokuapp.com";
+    //private statUrl = "https://meyespace-statservice.herokuapp.com";
 
-    //private statUrl = "http://localhost:5000";
+    private statUrl = "http://localhost:5000";
 
     getGlobalTopX(number: number) {
 
@@ -29,5 +29,10 @@ export class StatService {
     getNationalRankById(id: number) {
         let options = new RequestOptions({ withCredentials: true });
        return this.http.get(this.statUrl + `/local_rank/${id}`, options).map((response: Response) => response.json());
+    }   
+
+      getStatsById(id: number) {
+        let options = new RequestOptions({ withCredentials: true });
+       return this.http.get(this.statUrl + `/stat/${id}`, options).map((response: Response) => response.json());
     }   
 }

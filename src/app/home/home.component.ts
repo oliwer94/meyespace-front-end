@@ -59,6 +59,15 @@ export class HomeComponent implements OnInit {
 
         this.refreshLocalRankData();
         this.refreshGlobalRankData();
+
+        this.getOnlineFriends();
+    }
+
+    getOnlineFriends()
+    {
+        this.liveDataService.getOnlineFriends(this.liveDataService).subscribe(data => {
+
+        });
     }
 
     refreshLocalRankData() {
