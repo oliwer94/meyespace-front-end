@@ -5,7 +5,7 @@
             <p><a [routerLink]="['/login']" class="mdl-color-text--grey-600">Logout</a></p>
             <div class="mdl-layout-spacer"></div>
             <span>Global Rank: {{currentUser.globalRank | ordinal}}</span>
-            <div class="mdl-layout-spacer"></div>            
+            <div class="mdl-layout-spacer"></div>
             <span>National Rank: {{currentUser.localRank | ordinal}}</span>
             <div class="mdl-layout-spacer"></div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
@@ -32,7 +32,7 @@
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('home')"><i class="mdl-color-text--blue-grey-400 material-icons" >home</i>Home</a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('profile')"><i class="mdl-color-text--blue-grey-400 material-icons" >person</i>Profile</a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('friends')"><i class="mdl-color-text--blue-grey-400 material-icons" >people</i>Friends</a>
-            <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('search')" ><i class="mdl-color-text--blue-grey-400 material-icons" >search</i>Find Players</a>
+            <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('search')"><i class="mdl-color-text--blue-grey-400 material-icons" >search</i>Find Players</a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('globalchat')"><i class="mdl-color-text--blue-grey-400 material-icons" >forum</i>Global Chat</a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('leaderboard')"><i class="mdl-color-text--blue-grey-400 material-icons" >insert_chart</i>Leader Boards</a>
         </nav>
@@ -40,22 +40,22 @@
         <div class="mdl-layout-spacer"></div>
 
         <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons">person</i> Global Ranking</p>
-         <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50" >
+        <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
             <div *ngFor="let entry of global_leader_board">
-            <p class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;" >person</i>{{entry.username}}
-                <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p> 
-            </div>          
+                <p class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
+                    <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p>
+            </div>
         </div>
 
         <div class="mdl-layout-spacer"></div>
 
         <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons">person</i> {{currentUser.country}} Ranking</p>
 
-        <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50" >
+        <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
             <div *ngFor="let entry of local_leader_board">
-            <p class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;" >person</i>{{entry.username}}
-                <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p> 
-            </div>          
+                <p class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
+                    <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p>
+            </div>
         </div>
 
         <div class="mdl-layout-spacer"></div>
@@ -66,11 +66,11 @@
 
 
     <main class="mdl-layout__content mdl-color--grey-400">
-        <profile *ngIf="showProfile" ></profile>
+        <profile *ngIf="showProfile"></profile>
         <friends *ngIf="showFriends"></friends>
-        <findPlayer *ngIf="showFindPlayer"></findPlayer>    
-        <leaderboard *ngIf="showLeaderBoard"></leaderboard>  
-        <globalChat *ngIf="showGlobalChat"></globalChat>  
-        <landingView *ngIf="showLandingView"></landingView>      
+        <findPlayer *ngIf="showFindPlayer"></findPlayer>
+        <leaderboard *ngIf="showLeaderBoard"></leaderboard>
+        <globalChat *ngIf="showGlobalChat"></globalChat>
+        <landingView *ngIf="showLandingView"></landingView>
     </main>
 </div>

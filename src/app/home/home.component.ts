@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
     showLandingView: boolean = true;
 
     liveDataService: any = "";
-   
+
 
     constructor(private http: Http, private userService: UserService, private statService: StatService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -34,13 +34,12 @@ export class HomeComponent implements OnInit {
     }
 
     changeMenu(menuitem) {
-
-        this.showFindPlayer = (menuitem == "search") ? true : false;
-        this.showProfile = (menuitem == "profile") ? true : false;
-        this.showLeaderBoard = (menuitem == "leaderboard") ? true : false;
-        this.showFriends = (menuitem == "friends") ? true : false;
-        this.showGlobalChat = (menuitem == "globalchat") ? true : false;
-        this.showLandingView = (menuitem == "home") ? true : false;
+        this.showGlobalChat = (menuitem === "globalchat") ? true : false;
+        this.showLandingView = (menuitem === "home") ? true : false;
+        this.showProfile = (menuitem === "profile") ? true : false;
+        this.showFriends = (menuitem === "friends") ? true : false;
+        this.showFindPlayer = (menuitem === "search") ? true : false;
+        this.showLeaderBoard = (menuitem === "leaderboard") ? true : false;
     }
 
     ngOnInit() {
@@ -63,8 +62,7 @@ export class HomeComponent implements OnInit {
         this.getOnlineFriends();
     }
 
-    getOnlineFriends()
-    {
+    getOnlineFriends() {
         this.liveDataService.getOnlineFriends(this.liveDataService).subscribe(data => {
 
         });

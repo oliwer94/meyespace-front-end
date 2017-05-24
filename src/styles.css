@@ -119,3 +119,6 @@ html, body {
   max-width: 1080px;
 }
 
+.demo-card-wide.mdl-card {
+  width: 512px;
+}

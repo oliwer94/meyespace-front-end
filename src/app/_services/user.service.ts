@@ -11,6 +11,7 @@ export class UserService {
     baseUrl = 'http://localhost:3000';
 
     getAll() {
+
         return this.http.get(this.baseUrl + '/users', this.jwt()).map((response: Response) => response.json());
     }
 
@@ -18,23 +19,54 @@ export class UserService {
         return this.http.get(this.baseUrl + '/me/', this.jwt()).map((response: Response) => response.json());
     }
 
-    getById(id: number) {
-        return this.http.get(this.baseUrl + '/users/' + id, this.jwt()).map((response: Response) => response.json());
+    getFriends(id: number) {
+         let options = new RequestOptions({ withCredentials: true });
+        return this.http.get(this.baseUrl + '/getFriends/'+id, options).map((response: Response) => response.json());
+    }
+
+    getReceivedFriendRequests(id: number) {
+         let options = new RequestOptions({ withCredentials: true });
+        return this.http.get(this.baseUrl + '/getReceivedFriendRequests/'+id, options).map((response: Response) => response.json());
+    }
+
+    getSentFriendRequests(id: number) {
+         let options = new RequestOptions({ withCredentials: true });
+        return this.http.get(this.baseUrl + '/getSentFriendRequests/'+id,options).map((response: Response) => response.json());
     }
 
     create(user: User) {
         return this.http.post(this.baseUrl + '/register', user, this.jwt()).map((response: Response) => response.json());
     }
 
-   
-
-    /*update(user: User) {
-        return this.http.put('/api/users/' + user.id, user, this.jwt()).map((response: Response) => response.json());
+    getUsersBySearchTerm(searchTerm: string, id: number) {
+        let options = new RequestOptions({ withCredentials: true });
+        return this.http.get(this.baseUrl + '/users/' + id + "/" + searchTerm, options).map((response: Response) => response.json());
     }
 
-    delete(id: number) {
-        return this.http.delete('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
-    }*/
+    addFriend(id: string, username: string) {
+        let options = new RequestOptions({ withCredentials: true });
+        return this.http.post(this.baseUrl + '/addFriend/' + id, {username}, options).map((response: Response) => response);
+    }
+
+    removeFriend(id: string, username: string) {
+        let options = new RequestOptions({ withCredentials: true });
+        return this.http.post(this.baseUrl + '/removeFriend/' + id, {username}, options).map((response: Response) => response);
+    }
+
+    rejectFriend(id: string, username: string) {
+        let options = new RequestOptions({ withCredentials: true });
+        return this.http.post(this.baseUrl + '/rejectFriend/' + id, {username}, options).map((response: Response) => response);
+    }
+
+    rewokeFriend(id: string, username: string) {
+        let options = new RequestOptions({ withCredentials: true });
+        return this.http.post(this.baseUrl + '/rewokeFriend/' + id, {username}, options).map((response: Response) => response);
+    }
+
+    acceptFriend(id: string, username: string) {
+        let options = new RequestOptions({ withCredentials: true });
+        return this.http.post(this.baseUrl + '/acceptFriend/' + id, {username}, options).map((response: Response) => response);
+    }
 
     // private helper methods
 
@@ -43,7 +75,7 @@ export class UserService {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
             let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-            return new RequestOptions({ headers: headers });
+            return new RequestOptions({ headers: headers, withCredentials: true });
         }
     }
 }
