@@ -1,8 +1,8 @@
-﻿<div mdl class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+﻿<div mdl class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header" style="overflow:hidden;">
 
     <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
-            <p><a [routerLink]="['/login']" class="mdl-color-text--grey-600">Logout</a></p>
+            <p><a [routerLink]="['/login']" (click)="disconnect()" class="mdl-color-text--grey-600">Logout</a></p>
             <div class="mdl-layout-spacer"></div>
             <span>Global Rank: {{currentUser.globalRank | ordinal}}</span>
             <div class="mdl-layout-spacer"></div>
@@ -41,8 +41,8 @@
 
         <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons">person</i> Global Ranking</p>
         <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
-            <div *ngFor="let entry of global_leader_board">
-                <p class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
+            <div>
+                <p *ngFor="let entry of global_leader_board" class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
                     <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p>
             </div>
         </div>
@@ -52,8 +52,8 @@
         <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons">person</i> {{currentUser.country}} Ranking</p>
 
         <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
-            <div *ngFor="let entry of local_leader_board">
-                <p class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
+            <div>
+                <p *ngFor="let entry of local_leader_board" class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
                     <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p>
             </div>
         </div>
@@ -73,4 +73,31 @@
         <globalChat *ngIf="showGlobalChat"></globalChat>
         <landingView *ngIf="showLandingView"></landingView>
     </main>
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer " style="height:100%; top:0%; left:calc(100vw - 240px);overflow-y:hidden;">
+        <div class="mdl-layout__drawer  mdl-color--grey-900 mdl-color-text--blue-grey-90" style=" overflow-y:hidden;">
+            <span class="mdl-layout-title">Notifications</span>
+            <div style="max-width: 220px; max-height:220px; overflow-y:auto;">
+                <table class="  mdl-shadow--2dp" align="center" style="border-collapse:collapse; table-layout:fixed; width:220px;max-height:220px; background-color:white;overflow-y:auto; ">
+                    <tbody *ngIf="notifications.length > 0">
+                        <tr *ngFor="let entry of notifications">
+                            <td style="max-width:169px;border:solid 1px #fab; width:100px; word-wrap:break-word;"><span style="word-wrap: break-word; max-width:169px; overflow:hidden; white-space:normal;">{{entry}}</span></td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="notifications.length === 0">
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric"><span style="word-wrap: break-word;">No notifications</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-top:50px;">people</i> Online Friends</p>
+
+            <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
+                <div style="overflow-y:auto; max-height:400px;">
+                    <p *ngFor="let entry of online_Friends" class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry}}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

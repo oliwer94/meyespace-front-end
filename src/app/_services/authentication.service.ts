@@ -3,6 +3,7 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import { CookieService } from 'ng2-cookies';
+import { UserService } from '../_services/index';
 
 @Injectable()
 export class AuthenticationService {
@@ -11,8 +12,8 @@ export class AuthenticationService {
     login(email: string, password: string) {
 
         let headers = new Headers();
-         let backendURL = 'http://localhost:3000/login';
-       // let backendURL = 'https://meyespace-userservice.herokuapp.com/login';
+        let backendURL = 'http://localhost:3000/login';
+        // let backendURL = 'https://meyespace-userservice.herokuapp.com/login';
         headers.append('Content-Type', 'application/json');
 
         let options = new RequestOptions({ headers: headers, withCredentials: true });
@@ -26,7 +27,7 @@ export class AuthenticationService {
                 let country = jsonstring["country"];
                 let username = jsonstring["userName"];
                 let token = jsonstring["token"];
-                this._cookieService.set("token", token, (new Date(Date.now() + (60000*60))));
+                this._cookieService.set("token", token, (new Date(Date.now() + (60000 * 60))));
 
                 if (token && id && country && username) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -36,7 +37,21 @@ export class AuthenticationService {
     }
 
     logout() {
+
+        if (localStorage.getItem('currentUser')) {
+            var curr = JSON.parse(localStorage.getItem('currentUser'));
+            let userService: UserService = new UserService(this.http);
+            userService.logout(curr.id).subscribe(data => {
+                localStorage.removeItem('currentUser');
+
+            });
+        }
+        else {
+            localStorage.removeItem('currentUser');
+
+        }
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+
+
     }
 }

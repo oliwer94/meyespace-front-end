@@ -21,8 +21,8 @@ export class LeaderBoardComponent {
     maxValueOfGlobal: any;
     maxValueOfLocal: any;
 
-    currentPageGlobal:any;
-    currentPageLocal:any;
+    currentPageGlobal: any;
+    currentPageLocal: any;
 
     constructor(private statService: StatService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -30,88 +30,98 @@ export class LeaderBoardComponent {
         this.currentPageGlobal = 1;
         this.currentPageLocal = 1;
 
+        this.maxValueOfGlobal = 100;
+        this.maxValueOfLocal = 100;
+
         this.getPageNumbers();
 
         this.getGlobalLeaderBoard(this.currentPageGlobal);
-        this.getLocalLeaderBoard( this.currentPageLocal);
+        this.getLocalLeaderBoard(this.currentPageLocal);
     }
 
-    isValid(val,max) { return (typeof val === 'number' && val>0 && val <= max) ; }
+    isValid(val, max) {
+        return (typeof val === 'number' && val > 0 && val <= max);
+    }
 
     getPageNumbers() {
         this.statService.getPageNumbers(this.currentUser.country).subscribe(data => {
-            this.maxValueOfGlobal = (data.global / 10 > 1) ? data.global / 10 : 1;
-            this.maxValueOfLocal =(data.local / 10 > 1) ? data.local / 10 : 1;
-        });
-    }
-
-    getLocalLeaderBoard(page) {
-        if (page < 1) page = 1;
-        if (page > this.maxValueOfGlobal) page = this.maxValueOfGlobal;
-        var offset = (page === 1) ? 0 : page * 10;
-        this.statService.getGlobalRankings(offset).subscribe(data => {
-            this.globalLeaderBoard = data.scores;
+            this.maxValueOfGlobal = Math.floor((data.global / 10 > 1) ? data.global / 10 : 1);
+            this.maxValueOfLocal = Math.floor((data.local / 10 > 1) ? data.local / 10 : 1);
+            console.log(this.maxValueOfGlobal);
+            console.log(this.maxValueOfLocal);
         });
     }
 
     getGlobalLeaderBoard(page) {
         if (page < 1) page = 1;
-        if (page > this.maxValueOfLocal) page = this.maxValueOfLocal;
+        if (page > this.maxValueOfGlobal) page = this.maxValueOfGlobal;
         var offset = (page === 1) ? 0 : page * 10;
-        this.statService.getLocalRankings(offset, this.currentUser.country).subscribe(data => {
-            this.localLeaderBoard = data.scores;
+        this.statService.getGlobalRankings(offset).subscribe(data => {
+            this.globalLeaderBoard = data.data;
         });
     }
 
-    nextLocalPage(){
+    getLocalLeaderBoard(page) {
+        if (page < 1) page = 1;
+        if (page > this.maxValueOfLocal) page = this.maxValueOfLocal;
+        var offset = (page === 1) ? 0 : page * 10;
+        this.statService.getLocalRankings(offset, this.currentUser.country).subscribe(data => {
+            this.localLeaderBoard = data.data;
+        });
+    }
+
+    nextLocalPage() {
         this.currentPageLocal = this.currentPageLocal + 1;
         this.getLocalLeaderBoard(this.currentPageLocal);
     }
 
-    previousLocalPage(){
+    previousLocalPage() {
         this.currentPageLocal = this.currentPageLocal - 1;
         this.getLocalLeaderBoard(this.currentPageLocal);
     }
 
-    firstLocalPage(){
-        this.currentPageLocal =1;
+    firstLocalPage() {
+        this.currentPageLocal = 1;
         this.getLocalLeaderBoard(this.currentPageLocal);
     }
 
-    lastLocalPage(){
+    lastLocalPage() {
         this.currentPageLocal = this.maxValueOfLocal;
         this.getLocalLeaderBoard(this.currentPageLocal);
     }
 
-    goToLocalPage(pageNo){
-        this.currentPageLocal = pageNo;
-        this.getLocalLeaderBoard(this.currentPageLocal);
+    goToLocalPage(pageNo) {
+        if (this.isValid(Number.parseFloat(pageNo), this.maxValueOfLocal)) {
+            this.currentPageLocal = pageNo;
+            this.getLocalLeaderBoard(this.currentPageLocal);
+        }
     }
 
-
-     nextGlobalPage(){
+    nextGlobalPage() {
         this.currentPageGlobal = this.currentPageGlobal + 1;
         this.getGlobalLeaderBoard(this.currentPageGlobal);
     }
 
-    previousGlobalPage(){
+    previousGlobalPage() {
         this.currentPageGlobal = this.currentPageGlobal - 1;
         this.getGlobalLeaderBoard(this.currentPageGlobal);
     }
 
-    firstGlobalPage(){
-        this.currentPageGlobal =1;
+    firstGlobalPage() {
+        this.currentPageGlobal = 1;
         this.getGlobalLeaderBoard(this.currentPageGlobal);
     }
 
-    lastGlobalPage(){
+    lastGlobalPage() {
         this.currentPageGlobal = this.maxValueOfGlobal;
         this.getGlobalLeaderBoard(this.currentPageGlobal);
     }
 
-    goToGlobalPage(pageNo){
-        this.currentPageGlobal = pageNo;
-        this.getGlobalLeaderBoard(this.currentPageGlobal);
+    goToGlobalPage(pageNo) {
+        if (this.isValid(Number.parseFloat(pageNo), this.maxValueOfGlobal)) {
+            this.currentPageGlobal = pageNo;
+            this.getGlobalLeaderBoard(this.currentPageGlobal);
+        }
     }
 
 }

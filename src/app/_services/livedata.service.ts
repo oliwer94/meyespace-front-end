@@ -11,15 +11,21 @@ export class LiveDataService {
     private url = 'http://localhost:6001';
     socket: any;
 
-    constructor(country: string) {
+    constructor(room: string,name:string) {
         this.socket = io(this.url);
         this.socket.connect(this.url);
-        this.socket.emit('join', country, (error: any) => {
+        var params = {room,name};
+        this.socket.emit('join', params, (error: any) => {
             if (error) {
                 alert("An error has occured please reload the page to try to reconnect! " + error);
             }
-            console.log(`Connected to live data service. Listening on Global and ${country} channels`);
+            console.log(`Connected to live data service. Listening on Global and ${room} channels`);
         });
+    }
+
+    disconnect(instance:LiveDataService)
+    {
+        instance.socket.disconnect();
     }
 
     getGlobalList(instance:LiveDataService) {
@@ -50,7 +56,33 @@ export class LiveDataService {
      getOnlineFriends(instance:LiveDataService) {
         let observable = new Observable(observer => {     
             //console.log(instance.socket);       
-            instance.socket.on('onlineFriends', (data) => {
+            instance.socket.on('onlineFriend', (data) => {
+                observer.next(data);
+            });
+            return () => {
+                this.socket.disconnect();
+            };
+        })
+        return observable;
+    }
+
+    getNotifications(instance:LiveDataService) {
+        let observable = new Observable(observer => {     
+            //console.log(instance.socket);       
+            instance.socket.on('notification', (data) => {
+                observer.next(data);
+            });
+            return () => {
+                this.socket.disconnect();
+            };
+        })
+        return observable;
+    }
+
+    getOfflineFriends(instance:LiveDataService) {
+        let observable = new Observable(observer => {     
+            //console.log(instance.socket);       
+            instance.socket.on('offlineFriend', (data) => {
                 observer.next(data);
             });
             return () => {
