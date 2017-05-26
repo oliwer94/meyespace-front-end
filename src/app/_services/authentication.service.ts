@@ -42,16 +42,12 @@ export class AuthenticationService {
             var curr = JSON.parse(localStorage.getItem('currentUser'));
             let userService: UserService = new UserService(this.http);
             userService.logout(curr.id).subscribe(data => {
-                localStorage.removeItem('currentUser');
 
             });
         }
-        else {
-            localStorage.removeItem('currentUser');
-
-        }
+        localStorage.removeItem('currentUser');
+        this._cookieService.delete('token');
+        this._cookieService.delete('io');
         // remove user from local storage to log user out
-
-
     }
 }

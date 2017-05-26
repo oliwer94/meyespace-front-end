@@ -31,7 +31,10 @@ export class ChatService {
         })
         return observable;
     }
-
+    registerToPrivate(instance: ChatService,name)
+    {
+        instance.socket.emit('register',name);
+    }
     connect() {
         if (this.socket != null) {
             this.socket.disconnect();
@@ -75,6 +78,24 @@ export class ChatService {
     }
 
     createMessage(message, instance: ChatService) {
-        instance.socket.emit('createMessage',message);
+        instance.socket.emit('createMessage', message);
+    }
+
+
+    getPrivateMessages(instance: ChatService) {
+        let observable = new Observable(observer => {
+            instance.socket.on('private', (data) => {
+                observer.next(data);
+            });
+            return () => {
+                this.socket.disconnect();
+            };
+        })
+        return observable;
+    }
+
+    sendPrivateMessages(instance: ChatService, to, message) {
+        var params = { to, message };
+        instance.socket.emit("private", params);
     }
 }

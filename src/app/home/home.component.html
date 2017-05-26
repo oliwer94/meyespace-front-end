@@ -70,9 +70,11 @@
         <friends *ngIf="showFriends"></friends>
         <findPlayer *ngIf="showFindPlayer"></findPlayer>
         <leaderboard *ngIf="showLeaderBoard"></leaderboard>
-        <globalChat *ngIf="showGlobalChat"></globalChat>
+        <globalChat [hidden]="!showGlobalChat"></globalChat>
         <landingView *ngIf="showLandingView"></landingView>
+        <privateChat *ngIf="showPrivateChatWindow" (newMessage)="newPrivateMessage($event)" (hideChatPanel)="hideChatPanel($event)" [activeConversation]="activeConversation"> </privateChat>
     </main>
+
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer " style="height:100%; top:0%; left:calc(100vw - 240px);overflow-y:hidden;">
         <div class="mdl-layout__drawer  mdl-color--grey-900 mdl-color-text--blue-grey-90" style=" overflow-y:hidden;">
@@ -95,9 +97,11 @@
 
             <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
                 <div style="overflow-y:auto; max-height:400px;">
-                    <p *ngFor="let entry of online_Friends" class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry}}
+                    <p *ngFor="let entry of online_Friends" class="rank_list" (click)="showChatPanel(entry)"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry}}</p>
+                   <!-- <p *ngFor="let entry of online_f_with_msg_status" class="rank_list" (click)="showChatPanel(entry)"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.element}} <span *ngIf="!entry.read">   !!!</span></p>-->
                 </div>
             </div>
         </div>
     </div>
+    
 </div>

@@ -25,6 +25,7 @@ import { FindPlayerComponent } from './findPlayer/index';
 import { GlobalChatComponent } from './globalChat/index';
 import { LeaderBoardComponent } from './leaderboard/index';
 import { LandingViewComponent } from './landingView/index';
+import { PrivateChatComponent } from './privateChat/index';
 
 import { LoginAndRegisterComponent } from './loginAndRegister/index';
 
@@ -51,7 +52,8 @@ import {OrdinalPipe} from './_pipes/ordinal.pipe';
         GlobalChatComponent,
         LeaderBoardComponent,
         LandingViewComponent,
-        LoginAndRegisterComponent
+        LoginAndRegisterComponent,
+        PrivateChatComponent
         
     ],
     providers: [

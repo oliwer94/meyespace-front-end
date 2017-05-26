@@ -1,0 +1,26 @@
+<div class="chat" style="">
+    <div class="chat__main" style="width:300px !important;  max-height:300px  !important; display:float;position: fixed; bottom:60px; right:240px;">
+      <span align="right" >Chatting with {{activeConversation.with}}<button  (click)="close()" style="width:30px !important; right:100px;">X</button></span>
+        <ol id="privateMessages" class="chat__messages" style="border:solid 1px black;">
+            <li class=message *ngFor="let entry of activeConversation.messages">
+                <div class="message__title">
+                    <h4>{{entry.from}}</h4>
+                    <span>{{entry.createdAt}}</span>
+                </div>
+                <div class="message__body">
+                    <p>{{entry.text}}</p>
+                </div>
+                <hr>
+            </li>
+
+        </ol>
+
+        <div class="chat__footer" style="position: fixed;width:300px !important; bottom:0; right:240px;">
+
+            <form id="message-form" (ngSubmit)="f.form.valid && sendMessage()" #f="ngForm" novalidate>
+                <input name="message" type="text" placeholder="Message" [(ngModel)]="messageModel.message" #message="ngModel" required/>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</div>

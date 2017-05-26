@@ -2,10 +2,12 @@
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 
 import { User } from '../_models/index';
-import { UserService, StatService, LiveDataService } from '../_services/index';
+import { UserService, StatService, LiveDataService, ChatService } from '../_services/index';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+
+import * as moment from 'moment';
 
 @Component({
     moduleId: module.id,
@@ -18,20 +20,23 @@ export class HomeComponent implements OnInit {
     global_leader_board: any[] = [];
     local_leader_board: any[] = [];
 
-    online_Friends: any = ["oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer", "oliwer"];
+    online_Friends: any = [];
+    online_f_with_msg_status: any = [];
 
+    conversations: any = [];
+    activeConversation: any;
+
+    showPrivateChatWindow: boolean = false;
     showProfile: boolean = false;
     showFriends: boolean = false;
     showFindPlayer: boolean = false;
     showLeaderBoard: boolean = false;
     showGlobalChat: boolean = false;
     showLandingView: boolean = true;
-    notifications: any = ["Oliwer has reached RANK 5 in Hungary", "Oliwer has reached RANK 5 in Global", "Oliwer has sent you a friend request", "Oliwer has declined your friend request", "Oliwer accepted your Friends Request", "Oliwer has declined your friend request", "Oliwer accepted your Friends Request",];
+    notifications: any = [''];
     liveDataService: any = "";
 
-
-
-    constructor(private http: Http, private userService: UserService, private statService: StatService) {
+    constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.liveDataService = new LiveDataService(this.currentUser.country, this.currentUser.username);
     }
@@ -44,8 +49,6 @@ export class HomeComponent implements OnInit {
         this.showFindPlayer = (menuitem === "search") ? true : false;
         this.showLeaderBoard = (menuitem === "leaderboard") ? true : false;
     }
-
-
 
     ngOnInit() {
 
@@ -63,6 +66,35 @@ export class HomeComponent implements OnInit {
             this.notifications.unshift(data);
         });
 
+        this.chatService.registerToPrivate(this.chatService, this.currentUser.username);
+
+        this.chatService.getPrivateMessages(this.chatService).subscribe((data: any) => {
+            var convPartners = this.conversations.map(user => user.with);
+
+            if (convPartners.includes(data.from)) {
+                for (var i = 0; i < this.conversations.length; i++) {
+                    if (data.from === this.conversations[i].with) {
+                        this.conversations[i].messages.push(data.message);
+
+                        if (this.activeConversation && this.activeConversation.with !== data.from) {
+                          //  this.conversations[i].read = false;
+                        }
+                        break;
+                    }
+                }
+            }
+            else {
+                var newConv = new PrivateConverstaion();
+                newConv.with = data.from;
+                newConv.messages = [data.message];
+               // newConv.read = false;
+                this.conversations.push(newConv);
+            }
+
+           // this.combineUnreadWithOnline();
+
+        })
+
         this.refreshGlobalListData();
         this.refreshLocalListData();
 
@@ -74,6 +106,58 @@ export class HomeComponent implements OnInit {
 
         this.listenOnNewOnlineFriends();
         this.listenOnNewOfflineFriends();
+    }
+
+    showChatPanel(name) {
+        this.showPrivateChatWindow = true;
+        var convPartners = this.conversations.map(user => user.with);
+
+        if (convPartners.includes(name)) {
+            for (var i = 0; i < this.conversations.length; i++) {
+                if (name === this.conversations[i].with) {
+                    this.activeConversation = this.conversations[i];
+                  //  this.conversations[i].read = true;
+                    break;
+                }
+            }
+        }
+        else {
+            this.createNewConversation(name);
+        }
+    }
+
+    hideChatPanel(value) {
+        this.showPrivateChatWindow = false;
+    }
+
+    createNewConversation(name) {
+        var newConv = new PrivateConverstaion();
+        newConv.with = name;
+        newConv.messages = [];
+        this.conversations.push(newConv);
+        this.activeConversation = newConv;
+    }
+
+    changeActiveConversation(name) {
+        var mappedConv = this.conversations.filter(user => user.from === name)[0];
+        this.activeConversation = mappedConv;
+    }
+
+    newPrivateMessage(message: any) {
+        var mess = new Message();
+        mess.text = message.text;
+        mess.from = message.from;
+        mess.createdAt = moment(moment.now()).format('h:mm a');
+
+        for (var i = 0; i < this.conversations.length; i++) {
+            if (this.activeConversation.with === this.conversations[i].with) {
+                this.conversations[i].messages.push(mess);
+                this.activeConversation = this.conversations[i];
+                break;
+            }
+        }
+
+        this.chatService.sendPrivateMessages(this.chatService, this.activeConversation.with, mess)
     }
 
     generateNotification(old_list, new_list, country) {
@@ -112,16 +196,38 @@ export class HomeComponent implements OnInit {
     getOnlineFriends() {
         this.userService.getOnlineFriends(this.currentUser.id).subscribe(data => {
             this.online_Friends = data.onlineFriends;
+           // this.combineUnreadWithOnline();
         });
     }
+
+    /*combineUnreadWithOnline() {
+        this.online_f_with_msg_status = [];
+        var listOfUnreadConv = this.conversations.filter(conv => conv.read === false);
+        if (listOfUnreadConv && listOfUnreadConv.length > 0) {
+            this.online_Friends.forEach(element => {
+                if (listOfUnreadConv.includes(element))
+                { this.online_f_with_msg_status.push({ element, "read": false }); }
+                else
+                { this.online_f_with_msg_status.push({ element, "read": true }); }
+
+            });
+        }
+        else {
+            this.online_Friends.forEach(element => {
+                this.online_f_with_msg_status.push({ element, "read": true });
+            });
+        }
+    }*/
 
     listenOnNewOnlineFriends() {
         this.liveDataService.getOnlineFriends(this.liveDataService).subscribe(data => {
             let index = this.online_Friends.indexOf(data);
             if (index === -1)
-            { this.online_Friends.push(data); }
+            { this.online_Friends.push(data); /*this.combineUnreadWithOnline();*/ }
         });
     }
+
+
 
     listenOnNewOfflineFriends() {
         this.liveDataService.getOfflineFriends(this.liveDataService).subscribe(data => {
@@ -207,4 +313,15 @@ export class HomeComponent implements OnInit {
 class LeaderBoardEntry {
     username: string;
     score: number;
+}
+
+class PrivateConverstaion {
+    messages: Message[];
+    with: string;
+   // read: boolean;
+}
+class Message {
+    from: string;
+    createdAt: any;
+    text: string;
 }

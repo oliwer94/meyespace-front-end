@@ -11,10 +11,10 @@ export class LiveDataService {
     private url = 'http://localhost:6001';
     socket: any;
 
-    constructor(room: string,name:string) {
+    constructor(room: string, name: string) {
         this.socket = io(this.url);
         this.socket.connect(this.url);
-        var params = {room,name};
+        var params = { room, name };
         this.socket.emit('join', params, (error: any) => {
             if (error) {
                 alert("An error has occured please reload the page to try to reconnect! " + error);
@@ -23,12 +23,11 @@ export class LiveDataService {
         });
     }
 
-    disconnect(instance:LiveDataService)
-    {
+    disconnect(instance: LiveDataService) {
         instance.socket.disconnect();
     }
 
-    getGlobalList(instance:LiveDataService) {
+    getGlobalList(instance: LiveDataService) {
         let observable = new Observable(observer => {
             instance.socket.on('global', (data) => {
                 observer.next(data);
@@ -40,8 +39,8 @@ export class LiveDataService {
         return observable;
     }
 
-    getLocalList(instance:LiveDataService) {
-        let observable = new Observable(observer => {     
+    getLocalList(instance: LiveDataService) {
+        let observable = new Observable(observer => {
             //console.log(instance.socket);       
             instance.socket.on('local', (data) => {
                 observer.next(data);
@@ -53,8 +52,10 @@ export class LiveDataService {
         return observable;
     }
 
-     getOnlineFriends(instance:LiveDataService) {
-        let observable = new Observable(observer => {     
+   
+
+    getOnlineFriends(instance: LiveDataService) {
+        let observable = new Observable(observer => {
             //console.log(instance.socket);       
             instance.socket.on('onlineFriend', (data) => {
                 observer.next(data);
@@ -66,8 +67,8 @@ export class LiveDataService {
         return observable;
     }
 
-    getNotifications(instance:LiveDataService) {
-        let observable = new Observable(observer => {     
+    getNotifications(instance: LiveDataService) {
+        let observable = new Observable(observer => {
             //console.log(instance.socket);       
             instance.socket.on('notification', (data) => {
                 observer.next(data);
@@ -79,8 +80,8 @@ export class LiveDataService {
         return observable;
     }
 
-    getOfflineFriends(instance:LiveDataService) {
-        let observable = new Observable(observer => {     
+    getOfflineFriends(instance: LiveDataService) {
+        let observable = new Observable(observer => {
             //console.log(instance.socket);       
             instance.socket.on('offlineFriend', (data) => {
                 observer.next(data);
