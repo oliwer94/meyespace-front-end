@@ -6,9 +6,9 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class LiveDataService {
 
-    //private url = 'https://meyespace-livedataservice.herokuapp.com';
+    private url = 'https://meyespace-livedataservice.herokuapp.com';
 
-    private url = 'http://localhost:6001';
+    //private url = 'http://localhost:6001';
     socket: any;
 
     constructor(room: string, name: string) {

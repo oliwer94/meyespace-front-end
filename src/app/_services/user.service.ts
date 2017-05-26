@@ -7,8 +7,8 @@ import { User } from '../_models/index';
 export class UserService {
     constructor(private http: Http) { }
 
-    //baseUrl = 'https://meyespace-userservice.herokuapp.com';
-    baseUrl = 'http://localhost:3000';
+    baseUrl = 'https://meyespace-userservice.herokuapp.com';
+    //baseUrl = 'http://localhost:3000';
 
     logout(id:string) {
         let options = new RequestOptions({ withCredentials: true });
