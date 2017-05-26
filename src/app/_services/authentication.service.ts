@@ -27,6 +27,7 @@ export class AuthenticationService {
                 let country = jsonstring["country"];
                 let username = jsonstring["userName"];
                 let token = jsonstring["token"];
+                let vaar = "remove this code here";
                 this._cookieService.set("token", token, (new Date(Date.now() + (1000 * 3600 * 3)))); //3 hour
 
                 if (token && id && country && username) {
