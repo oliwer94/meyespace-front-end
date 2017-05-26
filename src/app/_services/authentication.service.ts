@@ -27,7 +27,7 @@ export class AuthenticationService {
                 let country = jsonstring["country"];
                 let username = jsonstring["userName"];
                 let token = jsonstring["token"];
-                this._cookieService.set("token", token, (new Date(Date.now() + (60000 * 60))));
+                this._cookieService.set("token", token, (new Date(Date.now() + (1000 * 3600 * 3)))); //3 hour
 
                 if (token && id && country && username) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
