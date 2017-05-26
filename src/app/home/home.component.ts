@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
                         this.conversations[i].messages.push(data.message);
 
                         if (this.activeConversation && this.activeConversation.with !== data.from) {
-                          //  this.conversations[i].read = false;
+                            this.conversations[i].read = false;
                         }
                         break;
                     }
@@ -87,11 +87,11 @@ export class HomeComponent implements OnInit {
                 var newConv = new PrivateConverstaion();
                 newConv.with = data.from;
                 newConv.messages = [data.message];
-               // newConv.read = false;
+                newConv.read = false;
                 this.conversations.push(newConv);
             }
 
-           // this.combineUnreadWithOnline();
+            this.combineUnreadWithOnline();
 
         })
 
@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit {
             for (var i = 0; i < this.conversations.length; i++) {
                 if (name === this.conversations[i].with) {
                     this.activeConversation = this.conversations[i];
-                  //  this.conversations[i].read = true;
+                    this.conversations[i].read = true;
                     break;
                 }
             }
@@ -124,16 +124,19 @@ export class HomeComponent implements OnInit {
         else {
             this.createNewConversation(name);
         }
+        this.combineUnreadWithOnline();
     }
 
     hideChatPanel(value) {
         this.showPrivateChatWindow = false;
+        this.activeConversation = [];
     }
 
     createNewConversation(name) {
         var newConv = new PrivateConverstaion();
         newConv.with = name;
         newConv.messages = [];
+        newConv.read = true;
         this.conversations.push(newConv);
         this.activeConversation = newConv;
     }
@@ -196,16 +199,17 @@ export class HomeComponent implements OnInit {
     getOnlineFriends() {
         this.userService.getOnlineFriends(this.currentUser.id).subscribe(data => {
             this.online_Friends = data.onlineFriends;
-           // this.combineUnreadWithOnline();
+            this.combineUnreadWithOnline();
         });
     }
 
-    /*combineUnreadWithOnline() {
+    combineUnreadWithOnline() {
         this.online_f_with_msg_status = [];
         var listOfUnreadConv = this.conversations.filter(conv => conv.read === false);
         if (listOfUnreadConv && listOfUnreadConv.length > 0) {
+            var listOfUnreadUsers = listOfUnreadConv.map(conv => conv.with);
             this.online_Friends.forEach(element => {
-                if (listOfUnreadConv.includes(element))
+                if (listOfUnreadUsers.includes(element))
                 { this.online_f_with_msg_status.push({ element, "read": false }); }
                 else
                 { this.online_f_with_msg_status.push({ element, "read": true }); }
@@ -217,13 +221,13 @@ export class HomeComponent implements OnInit {
                 this.online_f_with_msg_status.push({ element, "read": true });
             });
         }
-    }*/
+    }
 
     listenOnNewOnlineFriends() {
         this.liveDataService.getOnlineFriends(this.liveDataService).subscribe(data => {
             let index = this.online_Friends.indexOf(data);
             if (index === -1)
-            { this.online_Friends.push(data); /*this.combineUnreadWithOnline();*/ }
+            { this.online_Friends.push(data); this.combineUnreadWithOnline(); }
         });
     }
 
@@ -236,8 +240,11 @@ export class HomeComponent implements OnInit {
                 let deleted = this.online_Friends.splice(index, 1);
                 let helper = this.online_Friends;
                 this.online_Friends = helper;
+
+                this.combineUnreadWithOnline();
             }
         });
+
     }
 
     refreshLocalRankData() {
@@ -318,7 +325,7 @@ class LeaderBoardEntry {
 class PrivateConverstaion {
     messages: Message[];
     with: string;
-   // read: boolean;
+    read: boolean;
 }
 class Message {
     from: string;
