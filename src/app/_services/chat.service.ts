@@ -6,9 +6,9 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class ChatService {
 
-    private url = 'https://meyespace-chatservice.herokuapp.com';
+    //private url = 'https://meyespace-chatservice.herokuapp.com';
 
-    //private url = 'http://localhost:7000';
+    private url = 'http://localhost:7000';
     socket: any;
 
 
@@ -31,9 +31,8 @@ export class ChatService {
         })
         return observable;
     }
-    registerToPrivate(instance: ChatService,name)
-    {
-        instance.socket.emit('register',name);
+    registerToPrivate(instance: ChatService, name) {
+        instance.socket.emit('register', name);
     }
     connect() {
         if (this.socket != null) {
@@ -62,6 +61,10 @@ export class ChatService {
             };
         })
         return observable;
+    }
+
+    disconnect(instance: ChatService) {
+        instance.socket.disconnect();
     }
 
     getNewMessage(instance: ChatService) {

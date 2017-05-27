@@ -5,9 +5,9 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 export class StatService {
     constructor(private http: Http) { }
 
-    private statUrl = "https://meyespace-statservice.herokuapp.com";
+    //private statUrl = "https://meyespace-statservice.herokuapp.com";
 
-    //private statUrl = "http://localhost:5000";
+    private statUrl = "http://localhost:5000";
 
     getGlobalTopX(number: number) {
 

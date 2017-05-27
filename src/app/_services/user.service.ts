@@ -7,8 +7,8 @@ import { User } from '../_models/index';
 export class UserService {
     constructor(private http: Http) { }
 
-    baseUrl = 'https://meyespace-userservice.herokuapp.com';
-    //baseUrl = 'http://localhost:3000';
+    //baseUrl = 'https://meyespace-userservice.herokuapp.com';
+    baseUrl = 'http://localhost:3000';
 
     logout(id: string) {
         return this.http.get(this.baseUrl + '/logout/' + id, this.jwt()).map((response: Response) => response.json());
@@ -69,9 +69,8 @@ export class UserService {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
             let headers = new Headers({
-                'Authorization': 'Bearer ' + currentUser.token,
-                'Content-Type': 'application/json',
-                'token':currentUser.token
+                'Authorization': currentUser.token,
+                'Content-Type': 'application/json'
             });
             return new RequestOptions({ headers: headers, withCredentials: true });
         }

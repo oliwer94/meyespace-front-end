@@ -12,6 +12,7 @@ import * as moment from 'moment';
 @Component({
     moduleId: module.id,
     templateUrl: 'home.component.html',
+    styleUrls: ['home.component.css']
 })
 
 export class HomeComponent implements OnInit {
@@ -34,9 +35,9 @@ export class HomeComponent implements OnInit {
     showGlobalChat: boolean = false;
     showLandingView: boolean = true;
     notifications: any = [''];
-   // liveDataService: any = "";
+    // liveDataService: any = "";
 
-    constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService,private liveDataService:LiveDataService) {
+    constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService, private liveDataService: LiveDataService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         //this.liveDataService = new LiveDataService(this.currentUser.country, this.currentUser.username);
         this.liveDataService.connectToGlobalAndCountry(this.currentUser.country, this.currentUser.username);
@@ -108,6 +109,25 @@ export class HomeComponent implements OnInit {
         this.listenOnNewOnlineFriends();
         this.listenOnNewOfflineFriends();
     }
+
+    notifClick() {
+        if ($('.mdl-layout__drawer-right').hasClass('active')) {
+            $('.mdl-layout__drawer-right').removeClass('active');
+        }
+        else {
+            $('.mdl-layout__drawer-right').addClass('active');
+        }
+    }
+
+    obfusClick() {
+        if ($('.mdl-layout__drawer-right').hasClass('active')) {
+            $('.mdl-layout__drawer-right').removeClass('active');
+        }
+        else {
+            $('.mdl-layout__drawer-right').addClass('active');
+        }
+    }
+
 
     showChatPanel(name) {
         this.showPrivateChatWindow = true;
@@ -315,6 +335,7 @@ export class HomeComponent implements OnInit {
 
     disconnect() {
         this.liveDataService.disconnect(this.liveDataService);
+        this.chatService.disconnect(this.chatService);
     }
 }
 
