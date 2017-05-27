@@ -32,8 +32,14 @@ export class ChatService {
         return observable;
     }
     registerToPrivate(instance: ChatService, name) {
-        instance.socket.emit('register', name);
+        instance.socket.emit('register', name, (error: any) => {
+            if (error) {
+                alert("An error has occured please reload the page to try to reconnect! " + error);
+            }
+            console.log(`Connected to chat service. Listening Private channel.`);
+        });
     }
+
     connect() {
         if (this.socket != null) {
             this.socket.disconnect();
@@ -47,7 +53,7 @@ export class ChatService {
             if (error) {
                 alert("An error has occured please reload the page to try to reconnect! " + error);
             }
-            console.log(`Connected to live data service. Listening on Global and ${params.room} channels`);
+            console.log(`Connected to chat service. Listening on Global and ${params.room} channels`);
         });
     }
 
