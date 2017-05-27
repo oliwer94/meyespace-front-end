@@ -11,43 +11,44 @@ export class StatService {
 
     getGlobalTopX(number: number) {
 
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/global_top_x/${number}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/global_top_x/${number}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getNationalTopX(number: number, country: string) {
 
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/national_top_x/${number}/${country}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/national_top_x/${number}/${country}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getGlobalRankById(id: number) {
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/global_rank/${id}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/global_rank/${id}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getNationalRankById(id: number) {
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/local_rank/${id}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/local_rank/${id}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getStatsById(id: number) {
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/stat/${id}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/stat/${id}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getLocalRankings(offset: number, country: string) {
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/local_rankings/${country}/${offset}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/local_rankings/${country}/${offset}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getGlobalRankings(offset: number) {
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/global_rankings/${offset}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/global_rankings/${offset}`, this.jwt()).map((response: Response) => response.json());
     }
 
     getPageNumbers(country: String) {
-        let options = new RequestOptions({ withCredentials: true });
-        return this.http.get(this.statUrl + `/page_numbers/${country}`, options).map((response: Response) => response.json());
+        return this.http.get(this.statUrl + `/page_numbers/${country}`, this.jwt()).map((response: Response) => response.json());
+    }
+
+    private jwt() {
+        // create authorization header with jwt token
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.token) {
+            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+            return new RequestOptions({ headers: headers, withCredentials: true });
+        }
     }
 }
