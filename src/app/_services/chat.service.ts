@@ -6,9 +6,9 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class ChatService {
 
-    //private url = 'https://meyespace-chatservice.herokuapp.com';
+    private url = 'https://meyespace-chatservice.herokuapp.com';
 
-    private url = 'http://localhost:7000';
+    //private url = 'http://localhost:7000';
     socket: any;
 
 
