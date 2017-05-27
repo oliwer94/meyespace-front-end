@@ -70,7 +70,8 @@ export class UserService {
         if (currentUser && currentUser.token) {
             let headers = new Headers({
                 'Authorization': currentUser.token,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token':currentUser.token
             });
             return new RequestOptions({ headers: headers, withCredentials: true });
         }
