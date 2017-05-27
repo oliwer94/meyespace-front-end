@@ -49,8 +49,7 @@ export class StatService {
         if (currentUser && currentUser.token) {
             let headers = new Headers({
                 'Authorization': 'Bearer ' + currentUser.token,
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Credentials': 'true'
+                'Content-Type': 'application/json'
             });
             return new RequestOptions({ headers: headers, withCredentials: true });
         }
