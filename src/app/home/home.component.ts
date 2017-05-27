@@ -34,11 +34,12 @@ export class HomeComponent implements OnInit {
     showGlobalChat: boolean = false;
     showLandingView: boolean = true;
     notifications: any = [''];
-    liveDataService: any = "";
+   // liveDataService: any = "";
 
-    constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService) {
+    constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService,private liveDataService:LiveDataService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.liveDataService = new LiveDataService(this.currentUser.country, this.currentUser.username);
+        //this.liveDataService = new LiveDataService(this.currentUser.country, this.currentUser.username);
+        this.liveDataService.connectToGlobalAndCountry(this.currentUser.country, this.currentUser.username);
     }
 
     changeMenu(menuitem) {
@@ -313,7 +314,7 @@ export class HomeComponent implements OnInit {
     }
 
     disconnect() {
-        this.liveDataService.disconnect();
+        this.liveDataService.disconnect(this.liveDataService);
     }
 }
 

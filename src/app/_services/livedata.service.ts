@@ -11,7 +11,12 @@ export class LiveDataService {
     //private url = 'http://localhost:6001';
     socket: any;
 
-    constructor(room: string, name: string) {
+    constructor() {
+        
+    }
+
+    connectToGlobalAndCountry(room: string, name: string)
+    {
         this.socket = io(this.url);
         this.socket.connect(this.url);
         var params = { room, name };
