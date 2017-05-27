@@ -36,6 +36,9 @@ export class HomeComponent implements OnInit {
     showLandingView: boolean = true;
     notifications: any = [''];
     // liveDataService: any = "";
+    activeGeneralNotificationCount = 0;
+    activeChatNotficationCount = 0;
+    activeNotificationCount = 0;
 
     constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService, private liveDataService: LiveDataService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -52,6 +55,10 @@ export class HomeComponent implements OnInit {
         this.showLeaderBoard = (menuitem === "leaderboard") ? true : false;
     }
 
+    changeNotificationCount() {
+        var sum = this.activeGeneralNotificationCount + this.activeChatNotficationCount;
+        this.activeNotificationCount = (sum > 0) ? sum : null;
+    }
     ngOnInit() {
 
         this.liveDataService.getLocalList(this.liveDataService).subscribe(data => {
@@ -66,6 +73,13 @@ export class HomeComponent implements OnInit {
 
         this.liveDataService.getNotifications(this.liveDataService).subscribe(data => {
             this.notifications.unshift(data);
+            if ($('.mdl-layout__drawer-right').hasClass('active')) {
+                this.activeGeneralNotificationCount += 0;
+            }
+            else {
+                this.activeGeneralNotificationCount += 1;
+            }
+            this.changeNotificationCount();
         });
 
         this.chatService.registerToPrivate(this.chatService, this.currentUser.username);
@@ -80,6 +94,8 @@ export class HomeComponent implements OnInit {
 
                         if (this.activeConversation && this.activeConversation.with !== data.from) {
                             this.conversations[i].read = false;
+                            this.activeChatNotficationCount += 1;
+                            this.changeNotificationCount();
                         }
                         break;
                     }
@@ -91,6 +107,9 @@ export class HomeComponent implements OnInit {
                 newConv.messages = [data.message];
                 newConv.read = false;
                 this.conversations.push(newConv);
+
+                this.activeChatNotficationCount += 1;
+                this.changeNotificationCount();
             }
 
             this.combineUnreadWithOnline();
@@ -108,6 +127,8 @@ export class HomeComponent implements OnInit {
 
         this.listenOnNewOnlineFriends();
         this.listenOnNewOfflineFriends();
+        this.changeNotificationCount();
+
     }
 
     notifClick() {
@@ -117,6 +138,10 @@ export class HomeComponent implements OnInit {
         else {
             $('.mdl-layout__drawer-right').addClass('active');
         }
+
+        this.activeGeneralNotificationCount = 0;
+        this.changeNotificationCount();
+
     }
 
     obfusClick() {
@@ -138,6 +163,8 @@ export class HomeComponent implements OnInit {
                 if (name === this.conversations[i].with) {
                     this.activeConversation = this.conversations[i];
                     this.conversations[i].read = true;
+                    this.activeChatNotficationCount -= 1;
+                    this.changeNotificationCount();
                     break;
                 }
             }
@@ -191,14 +218,28 @@ export class HomeComponent implements OnInit {
                     let username = new_list[i].username;
                     let score = new_list[i].score;
                     this.notifications.unshift(`${username} has reach rank ${i + 1} in the ${country} rankings with the score: ${score}pt `);
+                    if ($('.mdl-layout__drawer-right').hasClass('active')) {
+                        this.activeGeneralNotificationCount += 0;
+                    }
+                    else {
+                        this.activeGeneralNotificationCount += 1;
+                    }
+                    this.changeNotificationCount();
                     break;
                 }
             }
         }
-        else if (this.local_leader_board === []) {
+        else if (old_list.length === 0) {
             let username = new_list[0].username;
             let score = new_list[0].score;
             this.notifications.unshift(`${username} has reach rank 1 in the ${country} rankings with the score: ${score}pt `);
+            if ($('.mdl-layout__drawer-right').hasClass('active')) {
+                this.activeGeneralNotificationCount += 0;
+            }
+            else {
+                this.activeGeneralNotificationCount += 1;
+            }
+            this.changeNotificationCount();
         }
         else if (new_list.length > old_list.length) {
             for (var i = 0; i < old_list.length; i++) {
@@ -206,12 +247,26 @@ export class HomeComponent implements OnInit {
                     let username = new_list[i].username;
                     let score = new_list[i].score;
                     this.notifications.unshift(`${username} has reach rank ${i + 1} in the ${country} rankings with the score: ${score}pt `);
+                    if ($('.mdl-layout__drawer-right').hasClass('active')) {
+                        this.activeGeneralNotificationCount += 0;
+                    }
+                    else {
+                        this.activeGeneralNotificationCount += 1;
+                    }
+                    this.changeNotificationCount();
                     break;
                 }
                 else if ((i + 1) === old_list.length) {
                     let username = new_list[i + 1].username;
                     let score = new_list[i + 1].score;
-                    this.notifications.unshift(`${username} has reach rank ${i + 2} in the ${country} rankings with the score: ${score}pt `);
+                    if ($('.mdl-layout__drawer-right').hasClass('active')) {
+                        this.activeGeneralNotificationCount += 0;
+                    }
+                    else {
+                        this.activeGeneralNotificationCount += 1;
+                    }
+                    this.changeNotificationCount();
+                    this.changeNotificationCount();
                 }
             }
         }
@@ -251,8 +306,6 @@ export class HomeComponent implements OnInit {
             { this.online_Friends.push(data); this.combineUnreadWithOnline(); }
         });
     }
-
-
 
     listenOnNewOfflineFriends() {
         this.liveDataService.getOfflineFriends(this.liveDataService).subscribe(data => {

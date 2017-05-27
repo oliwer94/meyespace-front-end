@@ -8,7 +8,7 @@
             <div class="mdl-layout-spacer"></div>
             <span>National Rank: {{currentUser.localRank | ordinal}}</span>
             <div class="mdl-layout-spacer"></div>
-            <div class="material-icons mdl-badge" id="notif" data-badge="5" (click)="notifClick()">notifications</div>
+            <div class="material-icons mdl-badge  mdl-badge--overlap" id="notif" [attr.data-badge]="activeNotificationCount" (click)="notifClick()">notifications</div>
         </div>
     </header>
 
@@ -73,15 +73,15 @@
         <span class="mdl-layout-title">Notifications</span>
 
         <div style="max-width: 237px; max-height:220px; overflow-y:auto; min-height:220px;">
-            <table class="  mdl-shadow--2dp" align="center" style="border-collapse:collapse; table-layout:fixed; width:220px;max-height:220px; min-height:220px; background-color:white;overflow-y:auto; ">
+            <table class="  mdl-shadow--2dp" align="center" style=" font-color: black;border-collapse:collapse; table-layout:fixed; width:220px;max-height:220px; min-height:220px; background-color:white;overflow-y:auto; ">
                 <tbody *ngIf="notifications.length > 0">
                     <tr *ngFor="let entry of notifications">
-                        <td style="max-width:169px;border:solid 1px #fab; width:100px; word-wrap:break-word;"><span style="word-wrap: break-word; max-width:169px; overflow-y:auto; white-space:normal;">{{entry}}</span></td>
+                        <td style="max-width:169px;border:solid 1px #fab; width:100px; word-wrap:break-word;"><span style="word-wrap: break-word; max-width:169px; overflow-y:auto; white-space:normal;"><font color="#000000">{{entry}}</font></span></td>
                     </tr>
                 </tbody>
                 <tbody *ngIf="notifications.length === 0">
                     <tr>
-                        <td class="mdl-data-table__cell--non-numeric"><span style="word-wrap: break-word;">No notifications</span></td>
+                        <td class="mdl-data-table__cell--non-numeric"><span style="word-wrap: break-word; color:black">No notifications</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -90,38 +90,7 @@
         <div style="overflow-y:auto; max-height:400px;">
             <!--<p *ngFor="let entry of online_Friends" class="rank_list" (click)="showChatPanel(entry)"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry}}</p>-->
             <p *ngFor="let entry of online_f_with_msg_status" class="rank_list" (click)="showChatPanel(entry.element)"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.element}}
-                <span *ngIf="!entry.read">   !!!</span></p>
+                <span *ngIf="!entry.read">  <i class="mdl-badge" style="margin-top:10px;"  data-badge="!"></i></span></p>
         </div>
     </div>
-    <!--<div class="mdl-layout__obfuscator-right" (click)="obfusClick()"></div>-->
-
-    <!--<div class="demo-drawer mdl-layout__drawer  mdl-color--grey-900 mdl-color-text--blue-grey-90 " style="height:100%; top:0%; left:calc(100vw - 240px);overflow-y:auto;">
-        <span class="mdl-layout-title">Notifications</span>
-        <div style="max-width: 237px; max-height:220px; overflow-y:auto; min-height:220px;">
-            <table class="  mdl-shadow--2dp" align="center" style="border-collapse:collapse; table-layout:fixed; width:220px;max-height:220px; min-height:220px; background-color:white;overflow-y:auto; ">
-                <tbody *ngIf="notifications.length > 0">
-                    <tr *ngFor="let entry of notifications">
-                        <td style="max-width:169px;border:solid 1px #fab; width:100px; word-wrap:break-word;"><span style="word-wrap: break-word; max-width:169px; overflow-y:auto; white-space:normal;">{{entry}}</span></td>
-                    </tr>
-                </tbody>
-                <tbody *ngIf="notifications.length === 0">
-                    <tr>
-                        <td class="mdl-data-table__cell--non-numeric"><span style="word-wrap: break-word;">No notifications</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-top:50px;">people</i> Online Friends</p>
-
-        
-
-        <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
-            <div style="overflow-y:auto; max-height:400px;">
-                <!--<p *ngFor="let entry of online_Friends" class="rank_list" (click)="showChatPanel(entry)"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry}}</p>-->
-    <!--<p *ngFor="let entry of online_f_with_msg_status" class="rank_list" (click)="showChatPanel(entry.element)"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.element}}
-        <span *ngIf="!entry.read">   !!!</span></p>
-</div>
-</div>
-</div>-->
-
 </div>
