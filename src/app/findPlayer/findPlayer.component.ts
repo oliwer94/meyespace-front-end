@@ -10,7 +10,8 @@ var el: JQuery;
 @Component({
     moduleId: module.id,
     selector: 'findPlayer',
-    templateUrl: 'findPlayer.component.html'
+    templateUrl: 'findPlayer.component.html',
+    styleUrls: ['../profile/profile.component.css','../friends/friends.component.css']
 })
 
 export class FindPlayerComponent {

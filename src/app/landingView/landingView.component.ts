@@ -9,7 +9,8 @@ var el: JQuery;
 @Component({
     moduleId: module.id,
     selector: 'landingView',
-    templateUrl: 'landingView.component.html'
+    templateUrl: 'landingView.component.html',
+    styleUrls: ['landingView.component.css']
 })
 
 export class LandingViewComponent {

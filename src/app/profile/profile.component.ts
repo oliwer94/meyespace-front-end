@@ -9,7 +9,8 @@ var el: JQuery;
 @Component({
     moduleId: module.id,
     selector: 'profile',
-    templateUrl: 'profile.component.html'
+    templateUrl: 'profile.component.html',
+    styleUrls: ['profile.component.css']
 })
 
 export class ProfileComponent {
@@ -40,7 +41,7 @@ export class ProfileComponent {
                     if (key.toLocaleLowerCase().indexOf("total") >= 0 || key.toLocaleLowerCase() === "longestgame") {
                         let global_entry: Stat = new Stat();
                         global_entry.statname = key;
-                        global_entry.score = data.stat[key];
+                        global_entry.score = Math.floor(data.stat[key]);
                         this.total_stats.push(global_entry);
                     }
                     else {

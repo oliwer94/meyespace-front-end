@@ -9,7 +9,8 @@ var el: JQuery;
 @Component({
     moduleId: module.id,
     selector: 'friends',
-    templateUrl: 'friends.component.html'
+    templateUrl: 'friends.component.html',
+    styleUrls: ['friends.component.css','../profile/profile.component.css']
 })
 
 export class FriendsComponent {

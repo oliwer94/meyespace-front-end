@@ -10,7 +10,7 @@ var el: JQuery;
     moduleId: module.id,
     selector: 'leaderboard',
     templateUrl: 'leaderboard.component.html',
-    styleUrls: ['leaderboard.component.css']
+    styleUrls: ['leaderboard.component.css','../profile/profile.component.css']
 })
 
 export class LeaderBoardComponent {
