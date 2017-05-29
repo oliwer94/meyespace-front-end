@@ -25,23 +25,25 @@
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('profile')"><i class="mdl-color-text--blue-grey-400 material-icons" >person</i>Profile</a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('friends')"><i class="mdl-color-text--blue-grey-400 material-icons" >people</i>Friends</a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('search')"><i class="mdl-color-text--blue-grey-400 material-icons" >search</i>Find Players</a>
-            <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('globalchat')"><i class="mdl-color-text--blue-grey-400 material-icons" >forum</i>Global Chat</a>
+            <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('globalchat')"><i class="mdl-color-text--blue-grey-400 material-icons" >forum</i>Global Chat <i class="mdl-badge" *ngIf="activeGlobalChatNotifCount !== null" id="notifGlobChat" [attr.data-badge]="activeGlobalChatNotifCount" style="margin-left:5px;"  data-badge=""></i></a>
             <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" style="padding-top: 5px;  padding-bottom: 5px;" (click)="changeMenu('leaderboard')"><i class="mdl-color-text--blue-grey-400 material-icons" >insert_chart</i>Leader Boards</a>
         </nav>
 
         <div class="mdl-layout-spacer"></div>
 
-        <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons">person</i> Global Ranking</p>
+        <p class="global_local_header">
+            <i class="mdl-color-text--blue-grey-400 material-icons">language</i> Global Ranking</p>
         <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
             <div>
-                <p *ngFor="let entry of global_leader_board" class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>{{entry.username}}
+                <p *ngFor="let entry of global_leader_board" class="rank_list"><i class="mdl-color-text--blue-grey-400 material-icons" style="margin-right: 32px;">person</i>
+                    <span style="margin-bottom:30px;">{{entry.username}}</span>
                     <span class="global__points floating-box " style="display: inline-block;">{{entry.score}}pt</span></p>
             </div>
         </div>
 
         <div class="mdl-layout-spacer"></div>
 
-        <p class="global_local_header"><i class="mdl-color-text--blue-grey-400 material-icons">person</i> {{currentUser.country}} Ranking</p>
+        <p class="global_local_header"><img src="{{imageUrl}}" onError="this.src='/assets/images/placeholder_flag.svg';" alt="Mountain View" style="width:20px;height:20px;">            {{currentUser.country}} Ranking</p>
 
         <div class="demo-navigation mdl-navigation mdl-color--grey-900 mdl-color-text--blue-grey-50">
             <div>
@@ -57,12 +59,12 @@
     </div>
 
 
-    <main class="mdl-layout__content mdl-color--grey-400">
+    <main class="mdl-layout__content mdl-color--grey-400" style=" background-image: url('/assets/images/space_scene.jpg'); background-repeat: no-repeat;">
         <profile *ngIf="showProfile"></profile>
         <friends *ngIf="showFriends"></friends>
         <findPlayer *ngIf="showFindPlayer"></findPlayer>
         <leaderboard *ngIf="showLeaderBoard"></leaderboard>
-        <globalChat [hidden]="!showGlobalChat"></globalChat>
+        <globalChat [hidden]="!showGlobalChat" (increaseNotif)="increaseChatNotif()" [active]="showGlobalChat"></globalChat>
         <landingView *ngIf="showLandingView"></landingView>
         <privateChat *ngIf="showPrivateChatWindow" (newMessage)="newPrivateMessage($event)" (hideChatPanel)="hideChatPanel($event)"
             [activeConversation]="activeConversation"> </privateChat>

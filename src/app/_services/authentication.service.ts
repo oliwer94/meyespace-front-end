@@ -32,7 +32,7 @@ export class AuthenticationService {
 
                 if (token && id && country && username) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ id,token, country, username }));
+                    localStorage.setItem('currentUser', JSON.stringify({ id, token, country, username }));
                 }
             });
     }
@@ -43,12 +43,11 @@ export class AuthenticationService {
             var curr = JSON.parse(localStorage.getItem('currentUser'));
             let userService: UserService = new UserService(this.http);
             userService.logout(curr.id).subscribe(data => {
-
+                localStorage.removeItem('currentUser');
+                this._cookieService.delete('token');
+                this._cookieService.delete('io');
             });
         }
-        localStorage.removeItem('currentUser');
-        this._cookieService.delete('token');
-        this._cookieService.delete('io');
         // remove user from local storage to log user out
     }
 }

@@ -35,15 +35,26 @@ export class HomeComponent implements OnInit {
     showGlobalChat: boolean = false;
     showLandingView: boolean = true;
     notifications: any = [''];
-    // liveDataService: any = "";
     activeGeneralNotificationCount = 0;
     activeChatNotficationCount = 0;
     activeNotificationCount = 0;
+    imageUrl:string = "";
+    activeGlobalChatNotifCount:number = null;
+
+
 
     constructor(private http: Http, private userService: UserService, private statService: StatService, private chatService: ChatService, private liveDataService: LiveDataService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        //this.liveDataService = new LiveDataService(this.currentUser.country, this.currentUser.username);
         this.liveDataService.connectToGlobalAndCountry(this.currentUser.country, this.currentUser.username);
+        this.chatService.connect();
+        var countryName = this.currentUser.country;
+        var countryTextForUrl = (countryName.indexOf(" ") > -1)? countryName.replace(' ','_'):countryName;
+        this.imageUrl = `http://img.freeflagicons.com/preview/${countryTextForUrl.toLowerCase()}.png`;
+    }
+
+    increaseChatNotif()
+    {
+        this.activeGlobalChatNotifCount += 1;
     }
 
     changeMenu(menuitem) {
@@ -53,12 +64,18 @@ export class HomeComponent implements OnInit {
         this.showFriends = (menuitem === "friends") ? true : false;
         this.showFindPlayer = (menuitem === "search") ? true : false;
         this.showLeaderBoard = (menuitem === "leaderboard") ? true : false;
+
+        if(this.showGlobalChat)
+        {
+            this.activeGlobalChatNotifCount = null;
+        }
     }
 
     changeNotificationCount() {
         var sum = this.activeGeneralNotificationCount + this.activeChatNotficationCount;
         this.activeNotificationCount = (sum > 0) ? sum : null;
     }
+
     ngOnInit() {
 
         this.liveDataService.getLocalList(this.liveDataService).subscribe(data => {

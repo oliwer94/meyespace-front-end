@@ -21,10 +21,10 @@
                         <tbody *ngIf="results.length > 0">
                             <tr *ngFor="let entry of results">
                                 <td class="mdl-data-table__cell--non-numeric">{{entry.username}}</td>
-                                <td *ngIf="entry.type === 'stranger'" (click)="addFriend(entry.username)">Add</td>
-                                <td *ngIf="entry.type === 'friend'"   (click)="removeFriend(entry.username)">Remove</td>
-                                <td *ngIf="entry.type === 'sent'"  (click)="rewokeFriend(entry.username)">Rewoke</td>
-                                <td *ngIf="entry.type === 'received'" > <span (click)="acceptFriend(entry.username)"> Accept</span> or <span (click)="rejectFriend(entry.username)">Reject</span></td>
+                                <td *ngIf="entry.type === 'stranger'" (click)="addFriend(entry.username)"><i  class="mdl-color-text--blue-grey-400 material-icons" style="cursor:pointer">add_circle</i></td>
+                                <td *ngIf="entry.type === 'friend'"   (click)="removeFriend(entry.username)"><i  class="mdl-color-text--blue-grey-400 material-icons" style="cursor:pointer">remove_circle</i></td>
+                                <td *ngIf="entry.type === 'sent'"  (click)="rewokeFriend(entry.username)"><i  class="mdl-color-text--blue-grey-400 material-icons" style="cursor:pointer">remove_circle</i></td>
+                                <td *ngIf="entry.type === 'received'" > <span (click)="acceptFriend(entry.username)"> <i  class="mdl-color-text--blue-grey-400 material-icons" style="cursor:pointer">add_circle</i></span> or <span (click)="rejectFriend(entry.username)"><i  class="mdl-color-text--blue-grey-400 material-icons" style="cursor:pointer">remove_circle</i></span></td>
                             </tr>
                         </tbody>
                         <tbody *ngIf="results.length === 0">

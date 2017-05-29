@@ -13,8 +13,18 @@ export class ChatService {
 
 
     constructor() {
-        this.connect();
     }
+
+
+
+    connect() {
+        if (this.socket != null) {
+            this.socket.disconnect();
+        }
+        this.socket = io(this.url);
+        this.socket.connect(this.url);
+    }
+
 
     getRooms(instance: ChatService) {
         instance.socket.emit('getRooms');
@@ -31,22 +41,6 @@ export class ChatService {
         })
         return observable;
     }
-    registerToPrivate(instance: ChatService, name) {
-        instance.socket.emit('register', name, (error: any) => {
-            if (error) {
-                alert("An error has occured please reload the page to try to reconnect! " + error);
-            }
-            console.log(`Connected to chat service. Listening Private channel.`);
-        });
-    }
-
-    connect() {
-        if (this.socket != null) {
-            this.socket.disconnect();
-        }
-        this.socket = io(this.url);
-        this.socket.connect(this.url);
-    }
 
     joinRoom(params, instance: ChatService) {
         instance.socket.emit('join', params, (error: any) => {
@@ -54,6 +48,27 @@ export class ChatService {
                 alert("An error has occured please reload the page to try to reconnect! " + error);
             }
             console.log(`Connected to chat service. Listening on Global and ${params.room} channels`);
+        });
+    }
+
+    disconnectRoom(params, instance: ChatService) {
+        instance.socket.removeAllListeners("updateUserList");
+        instance.socket.removeAllListeners("newMessage");
+        instance.socket.emit('disconnectRoom', params, (error: any) => {
+            if (error) {
+                alert("An error has occured please reload the page to try to disconnect from room! " + error);
+            }
+            console.log(`Disconnected from room.`);
+        });
+    }
+
+    registerToPrivate(instance: ChatService, name) {
+        instance.socket.emit('register', name, (error: any) => {
+            if (error) {
+                alert("An error has occured please reload the page to try to reconnect! " + error);
+            }
+            console.log(`Connected to chat service. Listening Private channel.`);
+
         });
     }
 
@@ -71,6 +86,7 @@ export class ChatService {
 
     disconnect(instance: ChatService) {
         instance.socket.disconnect();
+        instance.socket.close();
     }
 
     getNewMessage(instance: ChatService) {

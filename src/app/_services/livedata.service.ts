@@ -12,11 +12,10 @@ export class LiveDataService {
     socket: any;
 
     constructor() {
-        
+
     }
 
-    connectToGlobalAndCountry(room: string, name: string)
-    {
+    connectToGlobalAndCountry(room: string, name: string) {
         this.socket = io(this.url);
         this.socket.connect(this.url);
         var params = { room, name };
@@ -29,7 +28,9 @@ export class LiveDataService {
     }
 
     disconnect(instance: LiveDataService) {
+
         instance.socket.disconnect();
+        instance.socket.close();
     }
 
     getGlobalList(instance: LiveDataService) {
@@ -57,7 +58,7 @@ export class LiveDataService {
         return observable;
     }
 
-   
+
 
     getOnlineFriends(instance: LiveDataService) {
         let observable = new Observable(observer => {

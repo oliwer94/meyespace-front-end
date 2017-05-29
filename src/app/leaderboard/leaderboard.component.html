@@ -39,7 +39,7 @@
                     <span>{{currentPageGlobal}} of {{maxValueOfGlobal}}</span>
                     <span *ngIf="currentPageGlobal< maxValueOfGlobal"><i class="material-icons" (click)="nextGlobalPage()">chevron_right</i></span>
                     <span *ngIf="currentPageGlobal< (maxValueOfGlobal - 1)"><i class="material-icons"   (click)="lastGlobalPage()">last_page</i> </span>
-                    <span *ngIf="maxValueOfGlobal > 5">  <input #pageNo2 name="pageNo2" id="pageNo2" placeholder="page nO"/><i (click)="goToGlobalPage(pageNo2.value)" class="material-icons">arrow_forward</i></span>
+                    <span *ngIf="maxValueOfGlobal > 5">  <input #pageNo2 name="pageNo2" id="pageNo2" placeholder="go to" style="max-width:50px;"/><i (click)="goToGlobalPage(pageNo2.value)" class="material-icons">arrow_forward</i></span>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                     <span>{{currentPageLocal}} of {{maxValueOfLocal}}</span>
                     <span *ngIf="currentPageLocal< maxValueOfLocal"><i class="material-icons" (click)="nextLocalPage()">chevron_right</i></span>
                     <span *ngIf="currentPageLocal< (maxValueOfLocal - 1)"><i class="material-icons"   (click)="lastLocalPage()">last_page</i> </span>
-                    <span *ngIf="maxValueOfLocal > 5">  <input #pageNo placeholder="page nO"/><i class="material-icons" (click)="goToLocalPage(pageNo.value)">arrow_forward</i></span>
+                    <span *ngIf="maxValueOfLocal > 5">  <input #pageNo placeholder="go to" style="max-width:50px;"/><i class="material-icons" (click)="goToLocalPage(pageNo.value)">arrow_forward</i></span>
                 </div>
             </div>
         </div>

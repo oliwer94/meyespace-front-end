@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,EventEmitter,Input,Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 
@@ -20,10 +20,20 @@ export class GlobalChatComponent {
     currentUser: any;
     userList: any = [];
     messages: any = [];
+    @Input() active:boolean;
+    @Output() increaseNotif = new EventEmitter<any>();
+
+    emitIncrease()
+    {
+        this.increaseNotif.emit();
+    }
 
     constructor(private chatService: ChatService) {
         this.listenOnRooms();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        $('#send').prop("disabled", true);
+        $('#message-input').prop("disabled", true);
     }
 
     connect() {
@@ -32,8 +42,7 @@ export class GlobalChatComponent {
 
     listenOnRooms() {
         this.chatService.listenOnRooms(this.chatService).subscribe(data => {
-            console.log("rooms" + data);
-
+            
             var _select = $('<select>');
             _select.empty(); // remove old options
             $.each(data, function (value) {
@@ -55,6 +64,14 @@ export class GlobalChatComponent {
 
         this.getNewMessage();
         this.getFreshUserList();
+
+
+        $('#disconnect').prop("disabled", false);
+        $('#room').prop("disabled", true);
+        $('#rooms').prop("disabled", true);
+        $('#join').prop("disabled", true);
+        $('#send').prop("disabled", false);
+        $('#message-input').prop("disabled", false);
     }
 
 
@@ -78,6 +95,11 @@ export class GlobalChatComponent {
 
             this.messages.push(message);
 
+            if(!this.active)
+            {
+                this.emitIncrease();
+            }
+
             this.scrollToBottom();
         });
     }
@@ -100,6 +122,18 @@ export class GlobalChatComponent {
 
         this.chatService.createMessage(this.messageModel.message, this.chatService);
         this.messageModel.message = "";
+    }
+
+    disconnectRoom(room) {
+        var obj = { "name": this.currentUser.username, room };
+        this.chatService.disconnectRoom(obj, this.chatService);
+
+        $('#disconnect').prop("disabled", true);
+        $('#room').prop("disabled", false);
+        $('#rooms').prop("disabled", false);
+        $('#join').prop("disabled", false);
+        $('#send').prop("disabled", true);
+        $('#message-input').prop("disabled", true);
     }
 
 }
