@@ -11,7 +11,7 @@ export class UserService {
     //baseUrl = 'http://localhost:3000';
 
     logout(id: string) {
-        return this.http.get(this.baseUrl + '/logout/' + id, this.jwt()).map((response: Response) => response.json());
+        return this.http.get(this.baseUrl + '/logout/' + id, this.jwt()).map((response: Response) => response);
     }
 
     getCurrentUser(id: number) {
@@ -73,6 +73,7 @@ export class UserService {
                 'Content-Type': 'application/json',
                 'token':currentUser.token
             });
+            console.log(headers);
             return new RequestOptions({ headers: headers, withCredentials: true });
         }
     }

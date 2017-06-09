@@ -51,7 +51,7 @@ export class LoginAndRegisterComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.authenticationService.login(this.loginModel.email, this.loginModel.password)
+        this.authenticationService.login(this.loginModel.loginemail, this.loginModel.loginpassword)
             .subscribe(
             data => {
                 //  this.router.navigate(['/login'], { queryParams: {} });
@@ -74,6 +74,7 @@ export class LoginAndRegisterComponent implements OnInit {
                // this.router.navigate(['/login']);
             },
             error => {
+                console.log(error)
                 this.alertService.error(error);
                 this.loading = false;
             });

@@ -7,8 +7,8 @@ describe('angular2-frontend-project App', () => {
     page = new Angular2FrontendProjectPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display message saying Meyespace frontend', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('Meyespace frontend');
   });
 });

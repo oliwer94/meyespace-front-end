@@ -8,6 +8,11 @@ const app = express();
 // in the dist directory
 app.use(express.static(__dirname + '/dist'));
 
+//for load testing
+app.get('/loaderio-612260f2d11f102740d5641eba67b803/', function (req, res) {
+    res.send("loaderio-612260f2d11f102740d5641eba67b803");
+});
+
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
