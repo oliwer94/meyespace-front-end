@@ -1,14 +1,18 @@
-# Angular2FrontendProject
+# Meyespace-front-end
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+This project was generated with Angular CLI version 1.0.0.
+
+In order to run this project you have to have the following projects installed and running: <br>
+-[node-user-service](https://github.com/oliwer94/node-user-service) <br>
+-[node-stat-service](https://github.com/oliwer94/node-stat-service) <br>
+-[node-cache-manager](https://github.com/oliwer94/node-cache-manager) <br>
+-[node-realtimedata-provider](https://github.com/oliwer94/node-realtimedata-provider) <br>
+-[node-chat-service](https://github.com/oliwer94/node-chat-service)
+
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
 
 ## Build
 
