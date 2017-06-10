@@ -3,11 +3,11 @@
 This project was generated with Angular CLI version 1.0.0.
 
 In order to run this project you have to have the following projects installed and running: <br>
--[node-user-service](https://github.com/oliwer94/node-user-service) <br>
--[node-stat-service](https://github.com/oliwer94/node-stat-service) <br>
--[node-cache-manager](https://github.com/oliwer94/node-cache-manager) <br>
--[node-realtimedata-provider](https://github.com/oliwer94/node-realtimedata-provider) <br>
--[node-chat-service](https://github.com/oliwer94/node-chat-service)
+- [node-user-service](https://github.com/oliwer94/node-user-service) <br>
+- [node-stat-service](https://github.com/oliwer94/node-stat-service) <br>
+- [node-cache-manager](https://github.com/oliwer94/node-cache-manager) <br>
+- [node-realtimedata-provider](https://github.com/oliwer94/node-realtimedata-provider) <br>
+- [node-chat-service](https://github.com/oliwer94/node-chat-service)
 
 
 ## Development server
